@@ -1,19 +1,20 @@
-# Vuetify Webpack SSR Template
+# vue-vote
 
-> Vuetify SSR Webpack Template
+> A polling application written with vue.js and express
 
 ## Build Setup
 
 ``` bash
-vue-init vuetifyjs/webpack-ssr
+git clone https://github.com/NathanBland/vue-vote.git
 
-cd webpack-ssr
+cd vue-vote
 
 # npm
 npm install
 
 # yarn
 yarn
+
+npm run dev
 ```
 
-For additional information, please visit the [Official Documentation](https://vuetifyjs.com).
