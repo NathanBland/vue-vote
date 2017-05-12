@@ -1,8 +1,8 @@
 <template>
   <v-app top-toolbar>
     <header>
-      <v-toolbar>
-        <v-toolbar-logo>Vuetify</v-toolbar-logo>
+      <v-toolbar class="blue-grey darken-2">
+        <v-toolbar-logo>vue-vote</v-toolbar-logo>
         <v-toolbar-items>
           <v-toolbar-item>
             
@@ -25,9 +25,13 @@
   export default {
     data () {
       return {
-        item: {
-          text: 'Get Started'
-        }
+      }
+    },
+    methods: {
+      view (meta) {       
+        this.$store.commit('vuetify/TITLE', meta.title)
+        this.$store.commit('vuetify/DESCRIPTION', meta.description)
+        this.$store.commit('vuetify/KEYWORDS', meta.keywords)
       }
     }
   }

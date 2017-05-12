@@ -4,6 +4,9 @@ const isProd = process.env.NODE_ENV === 'production'
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+let bodyParser = require('body-parser')
+let mongoose = require('mongoose')
+let routes = require('./routes/')
 const compression = require('compression')
 const serialize = require('serialize-javascript')
 const favicon = require('serve-favicon')
@@ -28,6 +31,13 @@ if (isProd) {
     }
   })
 }
+
+mongoose.Promise = global.Promise
+mongoose.connect(process.env.dbURL || 'mongodb://localhost/vue-vote')
+
+mongoose.connection.on('connected', () => {
+  console.log('[mongo] database connected')
+})
 
 function createRenderer (bundle) {
   // https://github.com/vuejs/vue/blob/next/packages/vue-server-renderer/README.md#why-use-bundlerenderer
@@ -78,6 +88,20 @@ app.use(compression({ threshold: 0 }))
 app.use(favicon('./public/favicon-32x32.png'))
 app.use('/dist', serve('./dist'))
 app.use('/public', serve('./public'))
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token')
+  next()
+})
+
+app.use('/api', routes(express))
 
 app.get('*', (req, res) => {
   if (!renderer) {
