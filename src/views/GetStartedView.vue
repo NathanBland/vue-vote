@@ -150,7 +150,7 @@ export default {
   methods: {
     meta () {
       return {
-        title: 'vue-votez',
+        title: 'vue-vote',
         description: 'Vote on everything',
         keywords: 'vue, vote, events, poll'
       }
@@ -162,8 +162,10 @@ export default {
         password: this.password
       })
       .then((response) => {
-        console.log(response)
+        console.log(response.data)
+        this.$store.commit('user/login', response.data)
         this.loading = false
+        this.$router.push({ path: 'dashboard' })
       })
       .catch((error) => {
         console.log(error)
@@ -178,8 +180,11 @@ export default {
         displayName: this.displayName
       })
       .then((response) => {
-        console.log(response)
+        console.log(response.data)
+        this.$store.commit('user/login', response.data)
         this.loading = false
+        // this.$http.defaults.headers.common['token'] = response.data.token
+        this.$router.push({ path: 'dashboard' })
       })
       .catch((error) => {
         console.log(error)

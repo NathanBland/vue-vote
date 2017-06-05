@@ -10,6 +10,11 @@ export default new Vuex.Store({
     keywords: null,
     application: {
       connected: false
+    },
+    user: {
+      username: '',
+      token: '',
+      loggedIn: false
     }
   },
 
@@ -22,6 +27,7 @@ export default new Vuex.Store({
         // console.log('res:', response)
         if (response.status === 200) {
           commit('application/connected', true)
+          commit('vuetify/TITLE', 'got data')
         }
       })
       .catch((error) => {
@@ -31,6 +37,11 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    'user/login' (state, payload) {
+      state.user.username = payload.username
+      state.user.token = payload.token
+      state.user.loggedIn = true
+    },
     'application/connected' (state, payload) {
       state.application.connected = payload
     },

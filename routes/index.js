@@ -4,7 +4,8 @@ module.exports = (express) => {
   router.use(function (req, res, next) {
     // console.log('headers:', req.headers)
     if (req.headers.token || req.body.token) {
-      jwt.verify(req.headers.token || req.body.token, 'a super secret awesome phras 312ez',
+      console.log('[vue-vote] Authenticating user')
+      jwt.verify(req.headers.token || req.body.token, 'a super secret awesome phras 312e',
       function (err, user) {
         if (err) {
           return res.status(401).json({
@@ -25,7 +26,7 @@ module.exports = (express) => {
   })
   router.use('/auth', require('./auth')(express))
   // router.use('/user', require('./users')(express))
-  // router.use('/post', require('./posts')(express))
+  router.use('/polls', require('./polls')(express))
   // router.use('/feed', require('./feed')(express))
   // router.use('/search', require('./search')(express))
   router.get('/', function (req, res, next) {

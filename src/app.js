@@ -9,7 +9,7 @@ import { sync } from 'vuex-router-sync'
 sync(store, router)
 
 let instance = axios.create({
-  baseURL: 'http://localhost:8080/api/',
+  baseURL: 'https://0f437d4f.ngrok.io/api/',
   timeout: 10000,
   headers: {
     'Accept': 'application/json',
@@ -19,6 +19,23 @@ let instance = axios.create({
 Vue.prototype.$http = instance
 
 Vue.use(Vuetify)
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.state.user.loggedIn) {
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // make sure to always call next()!
+  }
+})
 
 const app = new Vue(Vue.util.extend({
   router,
